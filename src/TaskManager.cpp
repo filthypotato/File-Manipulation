@@ -1,21 +1,14 @@
-// TaskManager.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
-#include <iostream>
-#include <string>
-#include <cstdlib>
-#include <fstream>
+// TaskManager.cpp 
+// Main funtion is here where programs stars and ends
 
 #include "mainMenu.h"
-#include "fileManipulation.h"
-
-
 
 
 // ============ Start of main function ============
 int main()
 {
 	mainMenu();
+	return 0;
 }
 
 
