@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstdio>
 
 #include "fileManipulation.h"
 #include "onlyInt.h"   // Uses onlyInt() function in this file
@@ -17,10 +18,11 @@ void fileManipulationMenu()
 	std::cout << "[2] Read a file\n";
 	std::cout << "[3] Update a file\n";
 	std::cout << "[4] Delete a file\n";
+	// add cipher excrypt/decrypt option
 
 
 	int choice = onlyInt("Enter your choice: "); // only add numerical input allowed
-	// check onlyInt.h
+												// check onlyInt.h
 	switch (choice)
 	{
 	case 1:
@@ -36,12 +38,12 @@ void fileManipulationMenu()
 	case 3:
 		clearScreen();
 		std::cout << "You selected Update a file.\n";
-		// Placeholder for update file functionality
+		updateFile(fileName);
 		break;
 	case 4:
 		clearScreen();
 		std::cout << "You selected Delete a file.\n";
-		// Placeholder for delete file functionality
+		deleteFile(fileName);
 		break;
 	default:
 		std::cout << "Invalid choice. Please try again.\n";
@@ -53,7 +55,7 @@ void createFile(std::string& fileName)
 {
 
 	std::cout << "Enter the name of the file to create (include .txt, .md, etc): ";
-	std::getline(std::cin, fileName);
+	std::getline(std::cin >> std::ws, fileName);
 
 	if (fileName.empty())
 	{
@@ -95,8 +97,6 @@ void readFile(std::string& fileName)
 
 	// Reads from the text file
 	std::ifstream MyReadFile(fileName);
-
-
 	if (!MyReadFile)
 	{
 		std::cout << "File '" << fileName << "' does not exist.\n";
@@ -118,18 +118,103 @@ void readFile(std::string& fileName)
 
 void updateFile(std::string& fileName)
 {
-	// Selects file to update
-	std::cout << "Enter the name of the file you would like to update: ";
-	std::getline(std::cin >> std::ws, fileName); // use std::ws to ignore leading whitespace if user inputs any
+	// Asks user which file they would like to update
+	std::cout << "Enter the name of the file you would like to update (include .txt, .md, etc): ";
+	std::getline(std::cin >> std::ws, fileName);
 
-	// Open contents?
+	// Open file for reading its current contents
+	std::ifstream MyUpdateFile(fileName, std::ios::in);
+	if (!MyUpdateFile)
+	{
+		std::cout << "File '" << fileName << "' does not exist!" << '\n';
+		return;
+	}
 
+	// Reads existing contents
+	std::string oldContent{};
+	std::string line{};
 
-	// Update contents?
+	while (std::getline(MyUpdateFile, line))
+	{
+		oldContent += line + '\n';
+	}
+	MyUpdateFile.close();
 
+	// Shows current content
+	std::cout << "\nCurrent contents of '" << fileName << "':\n";
+	std::cout << "----------------------------------------\n";
+	std::cout << oldContent;
+	std::cout << "----------------------------------------\n";
 
-	// Save contents?
-};
+	// TODO: ask user if they want to change it,
+	std::cout << "\nDo you want to update this file? (y/n): ";
+	char answer{};
+	std::cin >> answer;
+	if (answer != 'y' && answer != 'Y')
+	{
+		std::cout << "File update cancelled.\n";
+		return;
+	}
+
+	// If yes, get new content from user
+	std::cout << "Enter the content to append to the file.\n";
+	std::cout << "(Type 'done' on a new line to finish writing)\n";
+
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	
+	std::string newContent{};
+	std::string fileLine{};
+	while (true)
+	{
+		std::getline(std::cin, fileLine);
+		if (fileLine == "DONE" || fileLine == "done")
+		{
+			break;
+		}
+		newContent += fileLine + '\n';
+	}
+
+	// Appends new content to selected file to update. 
+	std::ofstream writeFile(fileName, std::ios::app);
+
+	if (!writeFile)
+	{
+		std::cerr << "Error opening file '" << fileName << "' for appending!\n";
+		return;
+	}
+
+	writeFile << newContent;
+	writeFile.close();
+
+	std::cout << "File '" << fileName << "' updated successfully!\n";
+}
+
+void deleteFile(std::string& fileName)
+{
+	// Asks user which file they would like to delete
+	std::cout << "Enter the name of the file you would like to delete (include .txt, .md, etc): ";
+	std::getline(std::cin >> std::ws, fileName);
+
+	// checks if files does exist
+	std::ifstream checkFile(fileName);
+	if (!checkFile)
+	{
+		std::cout << "File '" << fileName << "' does not exist! :(\n";
+		return;
+	}
+	checkFile.close();
+
+	// to delete the file selected
+	if (std::remove(fileName.c_str()) == 0)
+	{
+		std::cout << "'" << fileName << "' was deleted successfully!\n";
+	}
+	else
+	{
+		std::cout << "T'was an error? Does this file exist? -_-\n";
+	}
+}
+
 
 
 
