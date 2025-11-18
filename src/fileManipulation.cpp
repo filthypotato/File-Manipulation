@@ -18,7 +18,7 @@ void fileManipulationMenu()
 	std::cout << "[2] Read a file\n";
 	std::cout << "[3] Update a file\n";
 	std::cout << "[4] Delete a file\n";
-	// add cipher excrypt/decrypt option
+	std::cout << "[5] Encryption/Decryption\n";
 
 
 	int choice = onlyInt("Enter your choice: "); // only add numerical input allowed
@@ -44,6 +44,11 @@ void fileManipulationMenu()
 		clearScreen();
 		std::cout << "You selected Delete a file.\n";
 		deleteFile(fileName);
+		break;
+	case 5:
+		clearScreen();
+		std::cout << "You selected file Encryption/Decryption.\n";
+		cipherCryption(fileName);
 		break;
 	default:
 		std::cout << "Invalid choice. Please try again.\n";
@@ -215,6 +220,51 @@ void deleteFile(std::string& fileName)
 	}
 }
 
+void cipherCryption(std::string& fileName)
+{
+	std::cout << "Encrypt or decrypt? (E/D): ";
+	char answer{};
+	std::cin >> std::ws, answer;
+
+	if (answer == 'E' || answer == 'e')
+		encryptFile(fileName);
+	else if (answer == 'D' || answer == 'd')
+		decryptFile(fileName);
+	else
+		std::cout << "Not an option.\n";
+}
+
+void encryptFile(const std::string& fileName)
+{
+	std::cout << "Enter a file you would like to encrypt. (include .txt, .md, etc): ";
+	std::cin >> std::ws, fileName;
+
+	// checks if files does exist
+	std::ifstream checkFile(fileName);
+	if (!checkFile)
+	{
+		std::cout << "File '" << fileName << "' does not exist! :(\n";
+		return;
+	}
+	checkFile.close();
 
 
+}
 
+
+void decryptFile(const std::string& fileName)
+{
+	std::cout << "Enter a file you would like to decrypt. (include .txt, .md, etc): ";
+	std::cin >> std::ws, fileName;
+
+	// checks if file does exist
+	std::ifstream checkFile(fileName);
+	if (!checkFile)
+	{
+		std::cout << "File '" << fileName << "' does not exist! :(\n";
+		return;
+	}
+	checkFile.close();
+
+
+}
