@@ -6,6 +6,7 @@
 #include "fileManipulation.h"
 #include "onlyInt.h"   // Uses onlyInt() function in this file
 #include "mainMenu.h"  // this is for clearing the screen
+#include "encdec.h"    // for encoding / decoding
 
 void clearScreen();
 
@@ -222,49 +223,16 @@ void deleteFile(std::string& fileName)
 
 void cipherCryption(std::string& fileName)
 {
+	EncDec encdec;
+
 	std::cout << "Encrypt or decrypt? (E/D): ";
 	char answer{};
-	std::cin >> std::ws, answer;
+	std::cin >> answer;
 
 	if (answer == 'E' || answer == 'e')
-		encryptFile(fileName);
+		encdec.encrypt();
 	else if (answer == 'D' || answer == 'd')
-		decryptFile(fileName);
+		encdec.decrypt();
 	else
 		std::cout << "Not an option.\n";
-}
-
-void encryptFile(const std::string& fileName)
-{
-	std::cout << "Enter a file you would like to encrypt. (include .txt, .md, etc): ";
-	std::cin >> std::ws, fileName;
-
-	// checks if files does exist
-	std::ifstream checkFile(fileName);
-	if (!checkFile)
-	{
-		std::cout << "File '" << fileName << "' does not exist! :(\n";
-		return;
-	}
-	checkFile.close();
-
-
-}
-
-
-void decryptFile(const std::string& fileName)
-{
-	std::cout << "Enter a file you would like to decrypt. (include .txt, .md, etc): ";
-	std::cin >> std::ws, fileName;
-
-	// checks if file does exist
-	std::ifstream checkFile(fileName);
-	if (!checkFile)
-	{
-		std::cout << "File '" << fileName << "' does not exist! :(\n";
-		return;
-	}
-	checkFile.close();
-
-
 }
