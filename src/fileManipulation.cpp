@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <cstdio>
 
 #include "fileManipulation.h"
 #include "onlyInt.h"   // Uses onlyInt() function in this file
@@ -10,7 +9,7 @@
 
 void clearScreen();
 
-// ============ File Manipulation Menu ============
+// File Manipulation Menu 
 void fileManipulationMenu()
 {
 	std::string fileName{}; // Variable to store file name for file manipulation tasks
@@ -109,7 +108,7 @@ void readFile(std::string& fileName)
 		return;
 	}
 
-	std::cout << "==== Contents of '" << fileName << "' ====\n";
+	std::cout << "Contents of '" << fileName << "'.\n";
 
 	// Uses a while loop together with getline() to read the file line by line
 	std::string fileLine{};
@@ -137,8 +136,8 @@ void updateFile(std::string& fileName)
 	}
 
 	// Reads existing contents
-	std::string oldContent{};
-	std::string line{};
+	std::string oldContent{};   // string to hold the old content from the file
+	std::string line{};   // string to store new lines of text in file
 
 	while (std::getline(MyUpdateFile, line))
 	{
@@ -152,24 +151,24 @@ void updateFile(std::string& fileName)
 	std::cout << oldContent;
 	std::cout << "----------------------------------------\n";
 
-	// TODO: ask user if they want to change it,
+	// Asks user if they want to update the file
 	std::cout << "\nDo you want to update this file? (y/n): ";
 	char answer{};
 	std::cin >> answer;
-	if (answer != 'y' && answer != 'Y')
+	if (answer != 'y' && answer != 'Y')  // if answer is not equal to either y or Y
 	{
 		std::cout << "File update cancelled.\n";
 		return;
 	}
 
-	// If yes, get new content from user
+	// If yes, get text input from user
 	std::cout << "Enter the content to append to the file.\n";
 	std::cout << "(Type 'done' on a new line to finish writing)\n";
 
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	
-	std::string newContent{};
-	std::string fileLine{};
+	std::string newContent{}; // string to store new lines inputed
+	std::string fileLine{};   // string to store new fileLines being added.
 	while (true)
 	{
 		std::getline(std::cin, fileLine);
@@ -223,7 +222,7 @@ void deleteFile(std::string& fileName)
 
 void cipherCryption(std::string& fileName)
 {
-	EncDec encdec;
+	EncDec encdec;  
 
 	std::cout << "Encrypt or decrypt? (E/D): ";
 	char answer{};
